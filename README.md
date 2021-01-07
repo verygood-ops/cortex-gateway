@@ -28,7 +28,10 @@ We try to solve this problem by adding a Gateway which can be considered the ent
 | --- | --- | --- |
 | `-gateway.distributor.address` | Upstream HTTP URL for Cortex Distributor | (empty string) |
 | `-gateway.query-frontend.address` | Upstream HTTP URL for Cortex Query Frontend | (empty string) |
-| `-gateway.auth.jwt-secret` | HMAC secret to sign JSON Web Tokens | (empty string) |
+| `-gateway.auth.jwt-secret` | HMAC secret or RSA public key to verify JSON Web Tokens | (empty string) |
+| `-gateway.auth.jwt-secret-encoded` | Decode JWT secret with Base64 before usafge | false |
+| `-gateway.auth.jwt-validation-algo` | Use HMAC or RSA for JWT verification | "HMAC" |
+
 
 ### Expected JWT payload
 
@@ -37,5 +40,7 @@ The expected Bearer token payload can be found here: https://github.com/rewe-dig
 - "tenant_id"
 - "aud"
 - "version" (must be an integer)
+- "exp"
 
 The audience and version claim is currently unused, but might be used in the future (e. g. to invalidate tokens).
+An expiration claim is optional, but when provided, it will be validated by Cortex Gateway.
